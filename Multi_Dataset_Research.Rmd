@@ -1,0 +1,27 @@
+---
+title: "Mutli Dataset Research"
+author: "Mia Fitzgerald"
+date: "4/24/2026"
+output: 
+  html_document:
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
+library(knitr)
+library(tidyverse)
+```
+
+
+## Include a short but descriptive title and all authors’ names.
+
+## Have an Introduction section. Describe your data sets and their topics, and summarize what they measure, and their sample sizes. Include links to your data sets.
+
+## Have a Data Import section. Discuss any steps you took to load and clean the data in as non-technical terms as you can. Include your data import/cleaning chunk here, but keep code folding closed by default.
+
+## Have an Exploratory Data Analysis section. a. Explore your variables. You don’t need to include every plot/table you try out, but include theclearest, most illustrating ones. b. Explore the primary/compound/foreign key variables in both data sets
+
+## 5 & 6 (Conclusion)
+
+

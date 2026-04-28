@@ -31,6 +31,28 @@ nocturnal_visits <- read_csv("Nocturnal_visits.csv")
 
 ## Have an Exploratory Data Analysis section. a. Explore your variables. You don’t need to include every plot/table you try out, but include theclearest, most illustrating ones. b. Explore the primary/compound/foreign key variables in both data sets
 
-## 5 & 6 (Conclusion)
+```{r}
+fruit_data%>%
+  ggplot(aes(x=Fruit_length_mm))+
+  geom_histogram(binwidth=2)
+  
+fruit_data%>%
+  filter(!is.na(Farm))%>%
+  ggplot(aes(x=Fruit_length_mm, y=Fruit_breadth_mm, color=Farm))+
+  geom_point(alpha=0.7)
+
+fruit_data%>%
+  summarize(avg_length=mean(Fruit_length_mm, na.rm=TRUE),
+            avg_width=mean(Fruit_breadth_mm, na.rm=TRUE))
+```
+
+
+```{r}
+
+```
+
+## 5 Research section 
+
+## 6 Conclusion
 
 

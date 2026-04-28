@@ -1,6 +1,6 @@
 ---
-title: "Mutli Dataset Research"
-author: "Mia Fitzgerald"
+title: "Different Insect Visitors Shape Mango Harvests"
+author: "Mia Fitzgerald and Angela McMahon"
 date: "4/24/2026"
 output: 
   html_document:
@@ -11,14 +11,23 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 library(knitr)
 library(tidyverse)
+library(readr)
 ```
 
 
-## Include a short but descriptive title and all authors’ names.
+### Introduction 
+Our data sets were generated from a field study which was conducted on six commercial mango orchards in Australia. The research was to assess the temporal and spacial variations in insect species visiting the orchard and their influence on the mango flowers. Specifically our first data set is looking at the fruit itself and the impact of insect visitation on reproductive success of the flower. This set has a sample size of 85. This set includes some different insect species along with an other category, the total number of insects that visited, what farm they are at, the distance, fruit size in different measurements and the harvest fruit set.  Our second data set examines the insect visitors during the night time with a sample size of 85 as well. This data set includes the farm and name as well, along with the time of day, weather conditions, and different insect species seen at those specific conditions. 
+Link to both: https://datadryad.org/dataset/doi:10.5061/dryad.v6wwpzh7p 
 
-## Have an Introduction section. Describe your data sets and their topics, and summarize what they measure, and their sample sizes. Include links to your data sets.
 
-## Have a Data Import section. Discuss any steps you took to load and clean the data in as non-technical terms as you can. Include your data import/cleaning chunk here, but keep code folding closed by default.
+### Data Import
+After downloading the csv files from the link above. Imported the data to R studio, read them in, and stored under fruit_data and nocturnal_visits. The names are compatible with R so there was no need to clean them. 
+
+```{r}
+fruit_data <- read_csv("Fruit_set.csv")
+nocturnal_visits <- read_csv("Nocturnal_visits.csv")
+```
+
 
 ## Have an Exploratory Data Analysis section. a. Explore your variables. You don’t need to include every plot/table you try out, but include theclearest, most illustrating ones. b. Explore the primary/compound/foreign key variables in both data sets
 

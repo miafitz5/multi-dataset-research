@@ -12,6 +12,8 @@ knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 library(knitr)
 library(tidyverse)
 library(readr)
+library(janitor)
+
 ```
 
 
@@ -21,11 +23,16 @@ Link to both: https://datadryad.org/dataset/doi:10.5061/dryad.v6wwpzh7p
 
 
 ### Data Import
-After downloading the csv files from the link above. Imported the data to R studio, read them in, and stored under fruit_data and nocturnal_visits. The names are compatible with R so there was no need to clean them. 
+After downloading the csv files from the link above. Imported the data to R studio, read them in, and stored under fruit_data and nocturnal_visits. The columns names had spaces so we cleaned them using the janitor package to make it compatible with R. Then we made the combined dataset using full_join because they were already in order with the same amount of observations. Join_by helped stop repeat column names and the total variables were renamed for clarity. 
 
 ```{r}
-fruit_data <- read_csv("Fruit_set.csv")
-nocturnal_visits <- read_csv("Nocturnal_visits.csv")
+fruit_data <- read_csv("Fruit_set.csv") %>% clean_names() 
+nocturnal_visits <- read_csv("Nocturnal_visits.csv") %>% clean_names() 
+
+combined_insect_data <- fruit_data %>%
+  full_join(nocturnal_visits, by = join_by(farm, distance)) %>%
+  rename(nocturnal_total = total.y, fruit_total = total.x)
+
 ```
 
 

@@ -49,7 +49,7 @@ fruit_data%>%
 fruit_data %>%
   filter(!is.na(farm)) %>%
   ggplot(aes(x = total, y = weight_g)) + 
-  geom_point() +
+  geom_point(alpha = 0.5) +
   geom_smooth(method = "lm", se = FALSE) +
   labs(title = "Total Number of Insect Visitors on the Mangoes Weight", x = "total_insects")
 

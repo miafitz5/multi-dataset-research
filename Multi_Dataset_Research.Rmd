@@ -40,13 +40,15 @@ combined_insect_data <- fruit_data %>%
 
 ```{r}
 fruit_data%>%
-  ggplot(aes(x=Fruit_length_mm))+
+  ggplot(aes(x=fruit_length_mm))+
   geom_histogram(binwidth=2)
   
 fruit_data%>%
-  filter(!is.na(Farm))%>%
-  ggplot(aes(x=Fruit_length_mm, y=Fruit_breadth_mm, color=Farm))+
-  geom_point(alpha=0.7)
+  filter(!is.na(farm))%>%
+  ggplot(aes(x=fruit_length_mm, y=fruit_breadth_mm, color=farm))+
+  geom_point(alpha=0.7) + 
+  facet_wrap(~farm) +
+  labs(title = "Mango Size")
 
 fruit_data%>%
   summarize(avg_length=mean(Fruit_length_mm, na.rm=TRUE),

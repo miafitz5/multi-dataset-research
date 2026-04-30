@@ -40,19 +40,49 @@ combined_insect_data <- fruit_data %>%
 
 ```{r}
 fruit_data%>%
-  ggplot(aes(x=fruit_length_mm))+
+  ggplot(aes(x=weight_g)) +
   geom_histogram(binwidth=2)
+```
+
+
+```{r}
+fruit_data %>%
+  filter(!is.na(farm)) %>%
+  ggplot(aes(x = total, y = weight_g)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Total Number of Insect Visitors on the Mangoes Weight", x = "total_insects")
+
+```
+
+
+```{r}
+fruit_data %>%
+  filter(!is.na(farm)) %>%
+  ggplot(aes(x = total)) +
+  geom_boxplot() +
+  facet_wrap(~farm) +
+  labs(title = "Total Amount of Insects at Each Farm", x = "total_insects")
   
+```
+
+
+```{r}
 fruit_data%>%
   filter(!is.na(farm))%>%
   ggplot(aes(x=fruit_length_mm, y=fruit_breadth_mm, color=farm))+
   geom_point(alpha=0.7) + 
   facet_wrap(~farm) +
   labs(title = "Mango Size")
+```
 
+
+```{r}
 fruit_data%>%
-  summarize(avg_length=mean(Fruit_length_mm, na.rm=TRUE),
-            avg_width=mean(Fruit_breadth_mm, na.rm=TRUE))
+  summarize(avg_length=mean(fruit_length_mm, na.rm=TRUE),
+            avg_width=mean(fruit_breadth_mm, na.rm=TRUE)) %>%
+  kable()
+
 ```
 
 

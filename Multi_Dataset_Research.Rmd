@@ -39,9 +39,13 @@ combined_insect_data <- fruit_data %>%
 ## Have an Exploratory Data Analysis section. a. Explore your variables. You don’t need to include every plot/table you try out, but include theclearest, most illustrating ones. b. Explore the primary/compound/foreign key variables in both data sets
 
 ```{r}
-fruit_data%>%
-  ggplot(aes(x=weight_g)) +
-  geom_histogram(binwidth=2)
+fruit_data %>%
+  filter(distance %in% c(0, 50, 100, 150, 200)) %>%
+  group_by(distance) %>%
+  select(distance, total) %>%
+  summarize(avg_total_insects = mean(total, na.rm = TRUE)) %>%
+  kable()
+
 ```
 
 

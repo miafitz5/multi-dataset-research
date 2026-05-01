@@ -89,12 +89,70 @@ fruit_data%>%
 
 ```
 
-
+# total insects in descending order -farm 6 saw no insects 
 ```{r}
+nocturnal_visits%>%
+  filter(!is.na(farm))%>%
+  group_by(farm)%>%
+  summarize(total_insect=sum(total))%>%
+  arrange(desc(total_insect))%>%
+  kable()
+```
+
+
+# intersting temp/humidity distribution over the farms - farm 6 shows very low temps and above average humidity 
+```{r}
+nocturnal_visits%>%
+  filter(!is.na(farm))%>%
+  rename(humidity=rh, temp.C=temp)%>%
+  ggplot(aes(x=humidity, y=temp.C, color=farm))+
+  geom_point(alpha=0.5)
+```
+
+
+# total insect counts seperated by distance from native veg- the closer the farm the more distibution 
+```{r}
+nocturnal_visits%>%
+  filter(!is.na(farm))%>%
+  ggplot(aes(x=total))+
+  geom_histogram(binwidth=0.5)+
+  facet_wrap(~distance)
+```
+
+
+# average number of insects visiting each marked distance-- the ones closest to the native veg are about 4x higher than any other distance
+```{r}
+nocturnal_visits%>%
+  filter(!is.na(total))%>%
+  group_by(distance)%>%
+  summarize(avg_insect=round(mean(total),3))%>%
+  kable()
+```
+
+
+# binned humidity levels based on the average seen humidity - very few cases have low humidity - most are about average
+```{r}
+nocturnal_visits%>%
+  filter(!is.na(rh))%>%
+  mutate(
+    humidity= case_when(
+      rh<65             ~ "low humidity",
+      rh>=65 & rh<79     ~ "average humidity",
+      rh>=79             ~ "high humidity"
+    )
+  )%>%ggplot(aes(x=humidity))+
+  geom_bar()+
+  labs(y="Number of Cases", x="Humidity Level", title="")
+
+
 
 ```
 
+
 ## 5 Research section 
+
+
+
 
 ## 6 Conclusion
 

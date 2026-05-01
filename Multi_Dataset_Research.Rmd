@@ -108,18 +108,9 @@ nocturnal_visits%>%
   ggplot(aes(x=humidity, y=temp.C, color=farm))+
   geom_point(alpha=0.5)+
   geom_smooth(method = "lm", se = FALSE)
-#with or without the geom smooth? 
+
 ```
 
-
-# total insect counts seperated by distance from native veg- the closer the farm the more distibution 
-```{r}
-nocturnal_visits%>%
-  filter(!is.na(farm))%>%
-  ggplot(aes(x=total))+
-  geom_histogram(binwidth=0.5)+
-  facet_wrap(~distance)
-```
 
 
 # average number of insects visiting each marked distance-- the ones closest to the native veg are about 4x higher than any other distance
@@ -139,10 +130,10 @@ nocturnal_visits%>%
   mutate(
     humidity= case_when(
       rh<65             ~ "low humidity",
-      rh>=65 & rh<79     ~ "average humidity",
+      rh>=65 & rh<79     ~ "standard humidity",
       rh>=79             ~ "high humidity"
     )
-  )%>%ggplot(aes(x=humidity))+
+  )%>%ggplot(aes(x=humidity, fill=farm))+
   geom_bar()+
   labs(y="Number of Cases", x="Humidity Level", title="")
 
@@ -153,7 +144,18 @@ nocturnal_visits%>%
 
 ## 5 Research section 
 
+How much of the total number of insects that visited each farm are visits that occured at night? 
 
+Does distance from native vegetation influence the amount of visits of insects at night?
+
+Does average farm temperature influence the distribution of insects visiting each farm at night? 
+
+Does the temperature and/or humidity influence the weight/length of the mangos?
+```{r}
+
+
+
+```
 
 
 ## 6 Conclusion

@@ -106,7 +106,9 @@ nocturnal_visits%>%
   filter(!is.na(farm))%>%
   rename(humidity=rh, temp.C=temp)%>%
   ggplot(aes(x=humidity, y=temp.C, color=farm))+
-  geom_point(alpha=0.5)
+  geom_point(alpha=0.5)+
+  geom_smooth(method = "lm", se = FALSE)
+#with or without the geom smooth? 
 ```
 
 

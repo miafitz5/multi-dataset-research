@@ -1,5 +1,5 @@
 ---
-title: "Different Insect Visitors Shape Mango Harvests"
+title: "Insect Visitors and Enviornmental Factors Influence Mango Fruit Production"
 author: "Mia Fitzgerald and Angela McMahon"
 date: "4/24/2026"
 output: 
@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(knitr)
 library(tidyverse)
 library(readr)
@@ -17,12 +17,12 @@ library(janitor)
 ```
 
 
-### Introduction 
+## Introduction 
 Our data sets were generated from a field study which was conducted on six commercial mango orchards in Australia. The research was to assess the temporal and spacial variations in insect species visiting the orchard and their influence on the mango flowers. Specifically our first data set is looking at the fruit itself and the impact of insect visitation on reproductive success of the flower. This set has a sample size of 85. This set includes some different insect species along with an other category, the total number of insects that visited, what farm they are at, the distance, fruit size in different measurements and the harvest fruit set.  Our second data set examines the insect visitors during the night time with a sample size of 85 as well. This data set includes the farm and name as well, along with the time of day, weather conditions, and different insect species seen at those specific conditions. 
 Link to both: https://datadryad.org/dataset/doi:10.5061/dryad.v6wwpzh7p 
 
 
-### Data Import
+## Data Import
 After downloading the csv files from the link above. Imported the data to R studio, read them in, and stored under fruit_data and nocturnal_visits. The columns names had spaces so we cleaned them using the janitor package to make it compatible with R. Then we made the combined dataset using full_join because they were already in order with the same amount of observations. Join_by helped stop repeat column names and the total variables were renamed for clarity. 
 
 ```{r}
@@ -36,7 +36,9 @@ combined_insect_data <- fruit_data %>%
 ```
 
 
-## Have an Exploratory Data Analysis section. a. Explore your variables. You don’t need to include every plot/table you try out, but include theclearest, most illustrating ones. b. Explore the primary/compound/foreign key variables in both data sets
+## Exploratory Data Analysis 
+
+### Average Total of Insects Visiting Each Distance 
 
 ```{r}
 fruit_data %>%
@@ -49,37 +51,40 @@ fruit_data %>%
 ```
 
 
+### Total Number of Insect Visitors and Mango Weights
+
 ```{r}
 fruit_data %>%
   filter(!is.na(farm)) %>%
   ggplot(aes(x = total, y = weight_g)) + 
   geom_point(alpha = 0.5) +
   geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Total Number of Insect Visitors on the Mangoes Weight", x = "total_insects")
+  labs(x = "total_insects")
 
 ```
 
-
+### Total Amount of Insects at Each Farm
 ```{r}
 fruit_data %>%
   filter(!is.na(farm)) %>%
   ggplot(aes(x = total)) +
   geom_boxplot() +
   facet_wrap(~farm) +
-  labs(title = "Total Amount of Insects at Each Farm", x = "total_insects")
+  labs( x = "total_insects")
   
 ```
 
 
+### Mango Size by Farm 
 ```{r}
 fruit_data%>%
   filter(!is.na(farm))%>%
   ggplot(aes(x=fruit_length_mm, y=fruit_breadth_mm, color=farm))+
   geom_point(alpha=0.7) + 
-  facet_wrap(~farm) +
-  labs(title = "Mango Size")
+  facet_wrap(~farm)
 ```
 
+### Average Mango Length and Width in mm 
 
 ```{r}
 fruit_data%>%
@@ -89,7 +94,7 @@ fruit_data%>%
 
 ```
 
-# total insects in descending order -farm 6 saw no insects 
+### Total Insects Visiting Each Farm at Night 
 ```{r}
 nocturnal_visits%>%
   filter(!is.na(farm))%>%
@@ -100,7 +105,7 @@ nocturnal_visits%>%
 ```
 
 
-# intersting temp/humidity distribution over the farms - farm 6 shows very low temps and above average humidity 
+### Humidity and Temp. for each Farm at Night 
 ```{r}
 nocturnal_visits%>%
   filter(!is.na(farm))%>%
@@ -113,7 +118,8 @@ nocturnal_visits%>%
 
 
 
-# average number of insects visiting each marked distance-- the ones closest to the native veg are about 4x higher than any other distance
+### Average Number of Insects Visiting each Distance at Night 
+
 ```{r}
 nocturnal_visits%>%
   filter(!is.na(total))%>%
@@ -123,7 +129,7 @@ nocturnal_visits%>%
 ```
 
 
-# binned humidity levels based on the average seen humidity - very few cases have low humidity - most are about average
+### Relative Humidity for each Farm at Night 
 ```{r}
 nocturnal_visits%>%
   filter(!is.na(rh))%>%
@@ -142,22 +148,30 @@ nocturnal_visits%>%
 ```
 
 
-## 5 Research section 
+## Research section 
+### Research Question: Do more or less insects visit the farms with a higher than average humidity at night? 
 
-How much of the total number of insects that visited each farm are visits that occured at night? 
-
-Does distance from native vegetation influence the amount of visits of insects at night?
-
-Does average farm temperature influence the distribution of insects visiting each farm at night? 
-
-Does the temperature and/or humidity influence the weight/length of the mangos?
 ```{r}
-
-
-
+fruit_noc <- fruit_data%>%left_join(nocturnal_visits, join_by(distance))
+fruit_noc%>%
+  rename(farm=farm.x, total_noc=total.y)%>%
+  filter(!is.na(rh))%>%
+  mutate(
+    humidity= case_when(
+      rh<65             ~ "low humidity",
+      rh>=65 & rh<79     ~ "standard humidity",
+      rh>=79             ~ "high humidity"
+    )
+  )%>%
+  ggplot(aes(x=total_noc))+
+  geom_bar()+
+  facet_wrap(~humidity)
+  
 ```
 
+From the bar plot above we can see less insects visit the farms with higher humidity at night compared to the farms with standard or low humidity. 
 
-## 6 Conclusion
+## Conclusion
 
+Overall, both of these data sets gave us insight on the influence of insects along with other environmental factors on the graoth rates of mangoes. Some of the most important things we found investigating these data sets included that the 0 distance from native crops shows a higher average insect visitation overall. There is a very slight positive correlation between mango weight in grams and the total number of insects that visited. We saw that D3 was the farm that saw the highest total number of inset visits with D1 at a close second. During nocturnal surveys the D6 farm saw no insect visits. It was also interesting to see that farm D6 also shows the lowest temperature and highest humidity  pairs. We also saw that trees at zero distance from the native vegetation saw four times as much insect visitation compared to any other distance. All in all, these two data sets gave insight to many aspects of the pollination process of mango trees along with which enviornmental factors influence them most. 
 
